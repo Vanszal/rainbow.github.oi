@@ -5,13 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Ulang Tahun Rainbow 🌈</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
   <style>
-    * {margin: 0; padding: 0; box-sizing: border-box;}
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(to bottom right, #ffd6e0, #ffe6f0);
-      overflow: hidden;
-      position: relative;
+      background: url('https://raw.githubusercontent.com/Vanszal/repo/main/images/cake.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
     }
     .slide {
       display: none;
@@ -59,7 +61,7 @@
       margin-top: 20px;
       display: none;
     }
-    .love {
+    .love, .floating-heart {
       position: absolute;
       width: 20px;
       height: 20px;
@@ -68,7 +70,8 @@
       animation: floatLove 1.5s ease-out forwards;
       z-index: 999;
     }
-    .love::before, .love::after {
+    .love::before, .love::after,
+    .floating-heart::before, .floating-heart::after {
       content: '';
       position: absolute;
       width: 20px;
@@ -76,12 +79,19 @@
       background: red;
       border-radius: 50%;
     }
-    .love::before { top: -10px; left: 0; }
-    .love::after { left: -10px; top: 0; }
+    .love::before, .floating-heart::before { top: -10px; left: 0; }
+    .love::after, .floating-heart::after { left: -10px; top: 0; }
+
     @keyframes floatLove {
       0% {transform: rotate(45deg) scale(1); opacity: 1;}
       100% {transform: rotate(45deg) translateY(-100px) scale(1.5); opacity: 0;}
     }
+
+    @keyframes floatHearts {
+      0% { transform: translateY(0) rotate(45deg); opacity: 0.8; }
+      100% { transform: translateY(-100vh) rotate(45deg); opacity: 0; }
+    }
+
     .wish-box {
       display: flex;
       flex-direction: column;
@@ -107,58 +117,21 @@
       cursor: pointer;
     }
   </style>
-
-<style>
-.floating-heart {
-  position: fixed;
-  width: 20px;
-  height: 20px;
-  background-color: red;
-  transform: rotate(45deg);
-  animation: floatHearts 5s linear infinite;
-  opacity: 0.8;
-  z-index: 999;
-}
-.floating-heart::before, .floating-heart::after {
-  content: '';
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background-color: red;
-  border-radius: 50%;
-}
-.floating-heart::before {
-  top: -10px;
-  left: 0;
-}
-.floating-heart::after {
-  left: -10px;
-  top: 0;
-}
-@keyframes floatHearts {
-  0% {
-    transform: translateY(0) rotate(45deg);
-    opacity: 0.8;
-  }
-  100% {
-    transform: translateY(-100vh) rotate(45deg);
-    opacity: 0;
-  }
-}
-</style>
-
 </head>
+
 <body>
 
-<audio autoplay loop>
-  <source src="https://cdn.pixabay.com/download/audio/2022/10/23/audio_a35aa56cfb.mp3" type="audio/mp3">
-</audio>
+<audio id="bgm" autoplay loop>
+  <source src="https://raw.githubusercontent.com/Vanszal/repo/main/audio/Rainbow.mp3" type="audio/mp3">
+</audio>  
 
+<!-- Slide 1 -->
 <div class="slide active" id="slide1">
   <div class="typing" id="typing1"></div>
   <button class="next-btn" id="btn1" onclick="nextSlide()">Klik untuk Lanjut ya!</button>
 </div>
 
+<!-- Slide 2 -->
 <div class="slide" id="slide2">
   <p style="font-size:1.2em;">Kamu pilih kado yang mana, ga aku<br><small>(kabulin ini cuma game aja 😝)</small></p>
   <div style="display:flex;justify-content:center;gap:40px;">
@@ -169,16 +142,19 @@
   <button class="next-btn" id="btn2" onclick="nextSlide()">Lanjuttt</button>
 </div>
 
+<!-- Slide 3 -->
 <div class="slide" id="slide3">
   <div class="typing" id="typing3"></div>
   <button class="next-btn" id="btn3" onclick="nextSlide()">Klik untuk Lanjut ya!</button>
 </div>
 
+<!-- Slide 4 -->
 <div class="slide" id="slide4">
   <div class="typing" id="typing4"></div>
   <button class="next-btn" id="btn4" onclick="nextSlide()">Klik untuk Lanjut ya!</button>
 </div>
 
+<!-- Slide 5 -->
 <div class="slide" id="slide5">
   <h3>Isi wish kamu di sini ya 💌</h3>
   <div class="wish-box">
@@ -187,19 +163,19 @@
   </div>
 </div>
 
+<!-- Watermark -->
+<div style="position: fixed; bottom: 10px; right: 15px; font-size: 0.8em; color: #999; font-family: 'Poppins', sans-serif; z-index: 9999;">
+  © vanszal
+</div>
+
+<!-- Script -->
 <script>
   let currentSlide = 0;
   const slides = document.querySelectorAll('.slide');
   const typingTexts = [
-    `Selamat Ulang Tahun, Rainbowku 🌈.
-
-Semoga Mas berhasil jadi orang pertama yang ucapin kaya gini. Maaf nggak disampingmu sekarang. Semoga tahun depan bisa hadir di hari kebahagiaanmu.`,
+    `Selamat Ulang Tahun, Rainbowku 🌈.\n\nSemoga Mas berhasil jadi orang pertama yang ucapin kaya gini. Maaf nggak disampingmu sekarang. Semoga tahun depan bisa hadir di hari kebahagiaanmu.`,
     null,
-    `Semoga di umur kamu sekarang semesta lebih berpihak. Semoga bisa mendapatkan hal yang selama ini diperjuangkan.
-
-Semoga senantiasa diberi kebahagiaan.
-
-I love you on your birthday, and everyday, now and forever.`,
+    `Semoga di umur kamu sekarang semesta lebih berpihak. Semoga bisa mendapatkan hal yang selama ini diperjuangkan.\n\nSemoga senantiasa diberi kebahagiaan.\n\nI love you on your birthday, and everyday, now and forever.`,
     `Mas mau ucapain banyak terima kasih buat selama ini. Makasih atas sabarmu, perhatianmu, dan segalanya. I'm so lucky have you. Jangan bosen sama mas, ya.`
   ];
 
@@ -241,7 +217,7 @@ I love you on your birthday, and everyday, now and forever.`,
 
   function sendWish() {
     const wish = document.getElementById("wishInput").value;
-    const phone = "628XXXXXXXXXX"; // Ganti dengan nomor WA tujuan
+    const phone = "628XXXXXXXXXX"; // Ganti nomor WA kamu di sini
     if (!wish.trim()) {
       alert("Tolong isi dulu wish-nya ya 🥺");
       return;
@@ -250,7 +226,7 @@ I love you on your birthday, and everyday, now and forever.`,
     window.open(url, '_blank');
   }
 
-  // Efek love klik
+  // Love klik manual
   document.addEventListener('click', function(e) {
     const love = document.createElement('div');
     love.className = 'love';
@@ -260,26 +236,19 @@ I love you on your birthday, and everyday, now and forever.`,
     setTimeout(() => love.remove(), 1500);
   });
 
-  // Start initial typing
+  // Love otomatis terbang
+  function createFloatingHeart() {
+    const heart = document.createElement('div');
+    heart.className = 'floating-heart';
+    heart.style.left = Math.random() * window.innerWidth + 'px';
+    heart.style.bottom = '-20px';
+    heart.style.animation = 'floatHearts 5s linear forwards';
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 5000);
+  }
+  setInterval(createFloatingHeart, 800);
+
   startTyping(0);
 </script>
-
-<div style="position: fixed; bottom: 10px; right: 15px; font-size: 0.8em; color: #999; font-family: 'Poppins', sans-serif; z-index: 9999;">
-  © vanszal
-</div>
-
-<script>
-function createFloatingHeart() {
-  const heart = document.createElement('div');
-  heart.className = 'floating-heart';
-  heart.style.left = Math.random() * 100 + 'vw';
-  heart.style.bottom = '-20px';
-  document.body.appendChild(heart);
-  setTimeout(() => heart.remove(), 5000);
-}
-setInterval(createFloatingHeart, 800);
-</script>
-
 </body>
 </html>
-
